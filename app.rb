@@ -101,7 +101,6 @@ class Circle
   end
 end
 
-pdf = Prawn::Document.new
 base = 50
 root = Circle.new(Point.new(base+200, base+400), "base")
 
@@ -115,5 +114,14 @@ c = Circle.new(Point.new(root.x, root.y), "bottom")
 root.add(c, :bottom)
 
 
+d = Circle.new(Point.new(c.x, c.y), "bottom")
+c.add(d, :bottom)
+
+d = Circle.new(Point.new(c.x, c.y), "right")
+c.add(d, :right)
+
+
+
+pdf = Prawn::Document.new
 root.draw_onto(pdf)
 pdf.render_file('flow_diagram.pdf')
