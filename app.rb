@@ -47,7 +47,48 @@ class Arrow
       when :bottom
         pdf.move_to(start.x, start.y - dx)
         pdf.line_to(@to.x, @to.y + dx)
+        
+        tx = 40 # offset x
+        ty = 40 # offset y
+        s = 50 # size
+        m = 0.5 # slope
+
+        # left_arrow(pdf, tx+40, ty+40, m, s)
+        right_arrow(pdf, tx, ty, m, s)
+
+
+        #up_arrow(pdf, tx+40, ty+40, m, s)
+        down_arrow(pdf, tx, ty, m, s)
     end
+
+    def f(x, m, h)
+      m*x + h
+    end
+
+    def left_arrow(pdf, px, py, m, s)
+      pdf.fill_polygon [px, py], [px+s, py], [px+s, py+f(s, m, 0)]
+      pdf.fill_polygon [px, py], [px+s, py], [px+s, py+f(s, -m, 0)]
+    end
+
+    def right_arrow(pdf, px, py, m, s)
+      pdf.fill_polygon [px, py], [px+s, py], [px, py+f(s, -m, s)]
+      pdf.fill_polygon [px, py], [px+s, py], [px, py+f(s, m, -s)]
+    end
+
+    def up_arrow(pdf, px, py, m, s)
+      pdf.fill_polygon [py, px], [py, px+s], [py+f(s, -m, s), px]
+      pdf.fill_polygon [py, px], [py, px+s], [py+f(s, m, -s), px]
+    end
+
+    def down_arrow(pdf, px, py, m, s)
+      pdf.fill_polygon [py, px], [py, px+s], [py+f(s, m, 0), px+s]
+      pdf.fill_polygon [py, px], [py, px+s], [py+f(s, -m, 0), px+s]
+    end
+
+    # def right_arrow_old(pdf, tx, ty, m, scale)
+    #   pdf.fill_polygon [tx, ty], [tx, scale+ty], [scale + m*tx, ty]
+    #   pdf.fill_polygon [tx, ty], [tx, -scale+ty], [scale+m*tx, ty]
+    # end
 
   end
 end
